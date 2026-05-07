@@ -1,152 +1,197 @@
 # ModeloSistemaDistribuidoJ2EE
 
-This project demonstrates the evolution of a traditional J2EE/JMS-based distributed system into a modern event-driven architecture using Spring Boot and Apache Kafka.
+Este projeto demonstra a evolução de um sistema distribuído tradicional baseado em J2EE/JMS para uma arquitetura moderna orientada a eventos utilizando Spring Boot e Apache Kafka.
 
-It explores how legacy enterprise systems can be integrated into a decoupled, asynchronous, cloud-native style architecture.
-
----
-
-## Problem
-
-Traditional enterprise systems built on J2EE and JMS are often:
-- Tightly coupled
-- Synchronous or blocking in nature
-- Difficult to scale independently
-- Hard to integrate with heterogeneous legacy systems
-
-This creates challenges when modernizing systems or integrating multiple business domains such as billing, customer management, and fraud detection.
+Ele explora como sistemas legados corporativos podem ser integrados em uma arquitetura desacoplada, assíncrona e com estilo cloud-native.
 
 ---
 
-## Solution
+## Problema
 
-This project introduces an event-driven architecture that decouples system components using Apache Kafka as an event bus.
+Sistemas corporativos tradicionais baseados em J2EE e JMS geralmente são:
 
-A Spring Boot orchestrator publishes events that are consumed asynchronously by independent services, including legacy systems.
+- Fortemente acoplados  
+- Síncronos ou bloqueantes  
+- Difíceis de escalar de forma independente  
+- Difíceis de integrar com sistemas legados heterogêneos  
 
-This enables:
-- Decoupled communication between services
-- Integration of heterogeneous technologies (J2EE + modern systems)
-- Improved scalability and resilience
-- Asynchronous processing of business events
+Isso cria desafios ao modernizar sistemas ou integrar diferentes domínios de negócio, como faturamento, gestão de clientes e detecção de fraude.
 
 ---
 
-## Functionalities
+## Solução
 
-- Event-driven orchestration using Apache Kafka
-- Integration with legacy J2EE billing system
-- Customer data system (legacy database)
-- Fraud detection system simulation
-- Asynchronous processing between services
-- Decoupled architecture across different technology stacks
+Este projeto propõe uma arquitetura orientada a eventos que desacopla os componentes do sistema utilizando o Apache Kafka como barramento de eventos.
+
+Um orquestrador em Spring Boot publica eventos que são consumidos de forma assíncrona por serviços independentes, incluindo sistemas legados.
+
+Isso permite:
+
+- Comunicação desacoplada entre serviços  
+- Integração de tecnologias heterogêneas (J2EE + sistemas modernos)  
+- Maior escalabilidade e resiliência  
+- Processamento assíncrono de eventos de negócio  
+
+---
+
+## Funcionalidades
+
+- Orquestração orientada a eventos com Apache Kafka  
+- Integração com sistema legado de faturamento em J2EE  
+- Sistema de dados de clientes (banco legado)  
+- Simulação de sistema de detecção de fraude  
+- Processamento assíncrono entre serviços  
+- Arquitetura desacoplada entre diferentes tecnologias  
 
 ---
 
 ## Stack
 
-- Java
-- Spring Boot
-- Apache Kafka
-- J2EE (legacy integration)
-- Docker
+- Java  
+- Spring Boot  
+- Apache Kafka  
+- J2EE (integração com legado)  
+- Docker  
 
 ---
 
-## Architecture
+## Arquitetura
 
 ```text
-              Client
+              Cliente
                  ↓
-     API / Orchestrator (Spring Boot)
+     API / Orquestrador (Spring Boot)
                  ↓
-            Event Bus (Kafka)
+            Barramento de Eventos (Kafka)
      ↓              ↓              ↓
-Billing        Customer        Fraud
-(J2EE)         (DB legacy)     (legacy system)
+Faturamento     Cliente        Fraude
+   (J2EE)     (DB legado)   (sistema legado)
 
 
 ```
 
-## Simplified Flow
 
-- Client sends request to orchestrator  
-- Orchestrator publishes event to Kafka  
-- Services consume events independently  
-- Each system processes its domain logic asynchronously  
-- System achieves decoupled integration across heterogeneous services  
+## Fluxo Simplificado
 
----
-
-## Design Trade-offs
-
-This architecture prioritizes:
-
-- Scalability over synchronous consistency  
-- Decoupling over tight integration  
-- Flexibility over simplicity  
-
-Trade-offs include:
-
-- Eventual consistency instead of immediate consistency  
-- Increased system complexity due to distributed event flow  
-- Need for observability across asynchronous services  
+- Cliente envia requisição ao orquestrador  
+- Orquestrador publica evento no Kafka  
+- Serviços consomem eventos de forma independente  
+- Cada sistema processa sua lógica de domínio de forma assíncrona  
+- Sistema alcança integração desacoplada entre serviços heterogêneos  
 
 ---
 
+## Trade-offs de Design
 
-### Prerequisites
+Esta arquitetura prioriza:
 
-#### Legacy environment (J2EE modules)
-- Java 7
-- Application server compatible with J2EE (if applicable)
+- Escalabilidade em vez de consistência síncrona  
+- Desacoplamento em vez de integração rígida  
+- Flexibilidade em vez de simplicidade  
 
-## How to Run J2EE (legacy modules)
+Trade-offs incluem:
 
-J2EE modules must be deployed in an application server.
-
-#### Option A: Deploy manually
-Build WAR file:
- - mvn package
- - Deploy the generated .war into:
- - WildFly / JBoss / Tomcat /IBM WebSphere (depending on your setup)
-
-#### Option B: Using Docker (if available)
- - docker-compose up
-
-
-
-#### Modern environment (Spring Boot services)
-- Java 17+
-- Maven
-- Docker
-
-## How to Run
-
-- mvn clean install
-- cd spring-services
-- mvn spring-boot:run
-
+- Consistência eventual em vez de imediata  
+- Maior complexidade devido ao fluxo distribuído de eventos  
+- Necessidade de observabilidade entre serviços assíncronos  
 
 ---
 
-### 4. Infrastructure (Databases + Messaging)
+## Pré-requisitos
 
-This project relies on a distributed infrastructure stack that simulates enterprise heterogeneous environments.
+### Ambiente legado (módulos J2EE)
 
-#### Messaging Layer
-- Apache Kafka (event-driven communication)
+- Java 7  
+- Servidor de aplicação compatível com J2EE (WildFly, JBoss, Tomcat, WebSphere, etc.)  
 
-#### Databases (legacy + enterprise systems)
-- MySQL
-- IBM DB2 (simulated / optional)
-- Oracle Database (simulated / optional)
+### Ambiente moderno (serviços Spring Boot)
+
+- Java 17+  
+- Maven  
+- Docker  
 
 ---
 
-### Start infrastructure services
+## Como executar J2EE (módulos legados)
 
-```bash id="infra_start"
+### Opção A: Deploy manual
+
+Gerar arquivo WAR:
+
+```bash
+mvn package
+```
+
+Fazer deploy do `.war` no servidor de aplicação:
+
+- WildFly  
+- JBoss  
+- Tomcat  
+- WebSphere  
+
+---
+
+### Opção B: Usando Docker
+
+```bash
 docker-compose up -d
+```
 
+---
+
+## Como executar Spring Boot
+
+```bash
+mvn clean install
+cd spring-services
+mvn spring-boot:run
+```
+
+---
+
+## Infraestrutura (Bancos de dados + Mensageria)
+
+Este projeto simula ambientes corporativos heterogêneos com:
+
+### Mensageria
+
+- Apache Kafka (comunicação orientada a eventos)
+
+### Bancos de dados
+
+- MySQL  
+- IBM DB2 (simulado / opcional)  
+- Oracle Database (simulado / opcional)  
+
+---
+
+## Inicializar infraestrutura
+
+```bash
+docker-compose up -d
+```
+
+---
+
+## Status Atual
+
+- Arquitetura definida  
+- Fluxo orientado a eventos (Kafka) implementado  
+- Integração com sistemas legados  
+- Retry / tratamento de erros implementado  
+- Observabilidade (logs, métricas, tracing)  
+- Preparação para deploy em produção  
+
+---
+
+## Inspiração / Referências
+
+Este projeto é inspirado em desafios reais de modernização de sistemas corporativos e padrões de design de sistemas distribuídos.
+
+Principais influências:
+
+- Arquiteturas J2EE distribuídas legadas  
+- Microsserviços orientados a eventos com Apache Kafka  
+- Estratégias de modernização de sistemas corporativos  
+- Princípios de arquitetura cloud-native  
 
