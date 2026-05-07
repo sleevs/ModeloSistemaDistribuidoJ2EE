@@ -1,165 +1,152 @@
 # ModeloSistemaDistribuidoJ2EE
 
-This project started as a traditional J2EE/JMS distributed system and evolved into a cloud-native quorum-based distributed storage simulator inspired by MIT 6.824 Distributed Systems Course – Lecture 10: Cloud Replicated DBs and Aurora. The project was developed as part of my independent study and research based on the course content available on YouTube.
+This project demonstrates the evolution of a traditional J2EE/JMS-based distributed system into a modern event-driven architecture using Spring Boot and Apache Kafka.
+
+It explores how legacy enterprise systems can be integrated into a decoupled, asynchronous, cloud-native style architecture.
 
 ---
 
 ## Problem
 
-Traditional enterprise distributed systems are often tightly coupled, difficult to scale, and heavily dependent on synchronous communication models.
+Traditional enterprise systems built on J2EE and JMS are often:
+- Tightly coupled
+- Synchronous or blocking in nature
+- Difficult to scale independently
+- Hard to integrate with heterogeneous legacy systems
 
-Modern distributed databases must handle:
-- replica failures
-- network latency
-- partial outages
-- distributed coordination
-- consistency trade-offs
-
-while still maintaining high availability and reliable reads/writes.
+This creates challenges when modernizing systems or integrating multiple business domains such as billing, customer management, and fraud detection.
 
 ---
 
 ## Solution
 
-This project explores how a traditional J2EE distributed architecture can evolve into a cloud-native quorum-based storage system.
+This project introduces an event-driven architecture that decouples system components using Apache Kafka as an event bus.
 
-The system simulates:
-- quorum reads/writes
-- replica coordination
-- asynchronous replication
-- fault tolerance
-- distributed storage behavior
+A Spring Boot orchestrator publishes events that are consumed asynchronously by independent services, including legacy systems.
 
-inspired by concepts studied in MIT Distributed Systems lectures, especially:
-- Cloud Replicated Databases
-- Aurora architecture
-- quorum replication models
+This enables:
+- Decoupled communication between services
+- Integration of heterogeneous technologies (J2EE + modern systems)
+- Improved scalability and resilience
+- Asynchronous processing of business events
 
 ---
 
 ## Functionalities
 
-- Quorum-based read/write coordination
-- Distributed replica nodes
-- Coordinator-based request orchestration
-- Replica failure simulation
-- Asynchronous replication experiments
-- Kubernetes deployment support
-- Cloud-native architecture evolution
-- Distributed systems experimentation environment
+- Event-driven orchestration using Apache Kafka
+- Integration with legacy J2EE billing system
+- Customer data system (legacy database)
+- Fraud detection system simulation
+- Asynchronous processing between services
+- Decoupled architecture across different technology stacks
 
 ---
 
 ## Stack
 
-### Legacy Foundation
-- J2EE
-- JMS
-
-### Modern Architecture
 - Java
 - Spring Boot
+- Apache Kafka
+- J2EE (legacy integration)
 - Docker
-- Kubernetes
-- REST/gRPC (planned)
-- Kafka (planned)
 
 ---
 
 ## Architecture
 
 ```text
-                Client
-                   |
-         J2EE Coordinator
-            (Control Plane)
-                   |
-      --------------------------------
-      |              |              |
- Spring Replica  Spring Replica  Spring Replica
-    (Data Plane)   (Data Plane)   (Data Plane)
+              Client
+                 ↓
+     API / Orchestrator (Spring Boot)
+                 ↓
+            Event Bus (Kafka)
+     ↓              ↓              ↓
+Billing        Customer        Fraud
+(J2EE)         (DB legacy)     (legacy system)
 
 
 ```
 
-## Simplified flow
+## Simplified Flow
 
-Write request:
-Client → Coordinator → Replicas → Quorum (W) → ACK → Response
+- Client sends request to orchestrator  
+- Orchestrator publishes event to Kafka  
+- Services consume events independently  
+- Each system processes its domain logic asynchronously  
+- System achieves decoupled integration across heterogeneous services  
 
-Read request:
-Client → Coordinator → Replicas → Quorum (R) → Latest version returned
-
-
-
+---
 
 ## Design Trade-offs
 
-This system prioritizes learning and control over distributed system internals rather than relying on managed services like AWS Aurora or DynamoDB.
+This architecture prioritizes:
 
-It intentionally increases implementation complexity to allow experimentation with:
-- quorum-based consistency
-- replication strategies
-- failure scenarios
+- Scalability over synchronous consistency  
+- Decoupling over tight integration  
+- Flexibility over simplicity  
+
+Trade-offs include:
+
+- Eventual consistency instead of immediate consistency  
+- Increased system complexity due to distributed event flow  
+- Need for observability across asynchronous services  
+
+---
 
 
+### Prerequisites
+
+#### Legacy environment (J2EE modules)
+- Java 7
+- Application server compatible with J2EE (if applicable)
+
+## How to Run J2EE (legacy modules)
+
+J2EE modules must be deployed in an application server.
+
+#### Option A: Deploy manually
+Build WAR file:
+ - mvn package
+ - Deploy the generated .war into:
+ - WildFly / JBoss / Tomcat /IBM WebSphere (depending on your setup)
+
+#### Option B: Using Docker (if available)
+ - docker-compose up
+
+
+
+#### Modern environment (Spring Boot services)
+- Java 17+
+- Maven
+- Docker
 
 ## How to Run
 
-This project is currently in early development.
+- mvn clean install
+- cd spring-services
+- mvn spring-boot:run
 
-mvn clean install
-mvn spring-boot:run
-
-
-
-## Current Status
-
-This project is currently in development:
-- [x] Architecture design
-- [x] Coordinator logic (initial version)
-- [ ] Replica implementation
-- [ ] Quorum read/write fully functional
-- [ ] Failure simulation
-- [ ] Kubernetes deployment
-
-
-
-
-## Inspiration / References
-
-This project is inspired by distributed systems concepts studied in MIT 6.824 Distributed Systems courses, with a focus on replication, consistency models, and fault tolerance.
-
-It is also influenced by real-world cloud database architectures, including:
-
-- Amazon RDS, which provides managed relational databases with high availability across Availability Zones (AZs). While reliable and widely used, this approach can introduce higher latency and cost due to synchronous cross-AZ replication.
-
-- Amazon Aurora architecture, which improves upon traditional RDS models by using a distributed storage layer and quorum-based replication. This design reduces replication overhead and improves performance while maintaining strong durability guarantees.
-
-- Dynamo-style systems, which introduce quorum-based replication models (R, W, N) and eventual consistency trade-offs widely used in distributed NoSQL databases.
-
-These systems provide the conceptual foundation for exploring quorum-based replication and distributed coordination in this project.
-
-
-## Future Improvements
-
-### Phase 2 — Resilience & Testing
-- Kubernetes deployment
-- Chaos testing
-- Network latency injection
-- Replica failure simulation
 
 ---
 
-### Phase 3 — Storage & Consistency
-- Quorum read/write consistency improvements
-- Write-Ahead Logging (WAL)
-- Persistent storage layer
-- Anti-entropy replication
+### 4. Infrastructure (Databases + Messaging)
+
+This project relies on a distributed infrastructure stack that simulates enterprise heterogeneous environments.
+
+#### Messaging Layer
+- Apache Kafka (event-driven communication)
+
+#### Databases (legacy + enterprise systems)
+- MySQL
+- IBM DB2 (simulated / optional)
+- Oracle Database (simulated / optional)
 
 ---
 
-### Research Extensions
-- Observability (metrics, tracing, logs)
-- Raft-based leader election (optional)
+### Start infrastructure services
+
+```bash id="infra_start"
+docker-compose up -d
+
 
