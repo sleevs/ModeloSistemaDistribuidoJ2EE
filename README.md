@@ -3,7 +3,7 @@
 # J2EE Legacy Modernization Lab
 
 This project demonstrates an incremental modernization journey
-from a traditional J2EE application running on IBM WebSphere
+from a traditional J2EE application 
 to a hybrid and cloud-native architecture using Spring Boot,
 API Gateway, Docker and Kubernetes.
 
@@ -20,7 +20,7 @@ migration.
 
 ### Release 1 — Legacy J2EE
 
-                WebSphere
+            Application Server
                     |
               JAX-RS / REST
                     |
@@ -41,10 +41,10 @@ migration.
               +-------+-------+
               |               |
               v               v
-          WebSphere       Spring Boot
+  Application Server       Spring Boot
           Legacy EJB      Customer Service
               |               |
-             DB2             DB
+             DB              DB
 
 
 
