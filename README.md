@@ -1,8 +1,6 @@
 # ModeloSistemaDistribuidoJ2EE
 
 
-Aqui está o conteúdo completo do `README.md`, pronto para copiar e utilizar no GitHub:
-
 
 # Laboratório de Modernização de Sistemas Legados J2EE
 
